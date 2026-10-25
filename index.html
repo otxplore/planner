@@ -1,0 +1,1489 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#101114">
+  <meta name="description" content="Plan road trips and adventures with OTXS Trip Planner. Organize destinations, daily itineraries, stops and travel expenses.">
+  <title>OTXS Trip Planner | Discover and Explore</title>
+
+  <style>
+    :root {
+      --bg: #101114;
+      --panel: #191a1f;
+      --panel2: #23242b;
+      --border: #33343e;
+      --text: #f5f5f5;
+      --muted: #a5a6b0;
+      --accent: #f59e0b;
+      --orange: #fb923c;
+      --green: #4ade80;
+      --red: #f87171;
+      --blue: #60a5fa;
+      --radius: 16px;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      line-height: 1.5;
+    }
+
+    button, input, select, textarea { font: inherit; }
+    button { cursor: pointer; }
+    a { color: var(--accent); }
+
+    .container {
+      width: min(1180px, calc(100% - 28px));
+      margin: auto;
+    }
+
+    header {
+      background: #101114;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .nav {
+      min-height: 72px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 11px;
+      color: var(--text);
+      text-decoration: none;
+      font-weight: 850;
+      font-size: 1.08rem;
+    }
+
+    .brand-icon {
+      width: 42px;
+      height: 42px;
+      border-radius: 13px;
+      display: grid;
+      place-items: center;
+      background: linear-gradient(135deg, var(--accent), var(--orange));
+      color: #111;
+      font-weight: 900;
+      font-size: 1.25rem;
+    }
+
+    .brand small {
+      display: block;
+      color: var(--muted);
+      font-size: .7rem;
+      font-weight: 500;
+    }
+
+    .nav-link {
+      color: var(--muted);
+      text-decoration: none;
+      font-size: .86rem;
+    }
+
+    .hero { padding: 35px 0 23px; }
+
+    .eyebrow {
+      color: var(--accent);
+      text-transform: uppercase;
+      letter-spacing: 1.8px;
+      font-size: .75rem;
+      font-weight: 800;
+    }
+
+    h1 {
+      font-size: clamp(2rem, 5vw, 3rem);
+      line-height: 1.15;
+      letter-spacing: -1px;
+      margin: 8px 0;
+    }
+
+    .hero p {
+      color: var(--muted);
+      max-width: 700px;
+      margin: 0;
+    }
+
+    .toolbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin: 10px 0 20px;
+    }
+
+    .toolbar-actions { display: flex; gap: 8px; flex-wrap: wrap; }
+
+    .layout {
+      display: grid;
+      grid-template-columns: 300px minmax(0, 1fr);
+      align-items: start;
+      gap: 19px;
+      padding-bottom: 45px;
+    }
+
+    .panel {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px;
+      min-width: 0;
+      margin-bottom: 17px;
+    }
+
+    .panel h2 { font-size: 1.08rem; margin: 0 0 5px; }
+    .muted { color: var(--muted); font-size: .84rem; }
+    .section-desc { margin: 0 0 18px; }
+
+    .section-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 15px;
+    }
+
+    .field { min-width: 0; margin-bottom: 14px; }
+    .field:last-child { margin-bottom: 0; }
+
+    label {
+      display: block;
+      color: #e1e1e5;
+      font-size: .83rem;
+      font-weight: 650;
+      margin-bottom: 6px;
+    }
+
+    input, select, textarea {
+      width: 100%;
+      min-width: 0;
+      padding: 11px 12px;
+      background: #111216;
+      color: var(--text);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      outline: none;
+    }
+
+    textarea { resize: vertical; min-height: 85px; }
+
+    input:focus, select:focus, textarea:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px #f59e0b1c;
+    }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .btn {
+      display: inline-flex;
+      justify-content: center;
+      align-items: center;
+      gap: 7px;
+      min-height: 39px;
+      padding: 8px 12px;
+      border: 1px solid transparent;
+      border-radius: 10px;
+      font-size: .83rem;
+      font-weight: 750;
+      text-decoration: none;
+      transition: filter .15s;
+    }
+
+    .btn:hover { filter: brightness(1.1); }
+
+    .primary {
+      background: linear-gradient(135deg, var(--accent), var(--orange));
+      color: #16120a;
+    }
+
+    .secondary {
+      background: var(--panel2);
+      border-color: var(--border);
+      color: var(--text);
+    }
+
+    .danger {
+      background: transparent;
+      border-color: var(--border);
+      color: var(--red);
+    }
+
+    .block { width: 100%; }
+    .actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 13px; }
+
+    .trip-list { display: grid; gap: 9px; }
+
+    .trip-item {
+      width: 100%;
+      text-align: left;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 13px;
+      background: #141519;
+      color: var(--text);
+    }
+
+    .trip-item.active {
+      border-color: var(--accent);
+      background: #f59e0b10;
+    }
+
+    .trip-item strong {
+      display: block;
+      font-size: .9rem;
+      overflow-wrap: anywhere;
+    }
+
+    .trip-item span {
+      display: block;
+      font-size: .77rem;
+      color: var(--muted);
+      margin-top: 4px;
+    }
+
+    .empty {
+      text-align: center;
+      padding: 25px 10px;
+      color: var(--muted);
+      font-size: .86rem;
+    }
+
+    .trip-header {
+      padding: 23px;
+      border-radius: var(--radius);
+      background:
+        radial-gradient(ellipse at top right, #f59e0b24, transparent 55%),
+        var(--panel);
+      border: 1px solid var(--border);
+      margin-bottom: 17px;
+    }
+
+    .trip-header h2 {
+      font-size: clamp(1.5rem, 4vw, 2.15rem);
+      margin: 8px 0 5px;
+      overflow-wrap: anywhere;
+    }
+
+    .trip-destination { color: var(--muted); }
+
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 10px;
+      margin-top: 20px;
+    }
+
+    .stat {
+      background: #111216a8;
+      border: 1px solid var(--border);
+      padding: 13px;
+      border-radius: 12px;
+      min-width: 0;
+    }
+
+    .stat-label { color: var(--muted); font-size: .76rem; }
+    .stat-value { font-weight: 850; font-size: 1.2rem; margin-top: 4px; overflow-wrap: anywhere; }
+
+    .day-tabs {
+      display: flex;
+      gap: 8px;
+      overflow-x: auto;
+      padding: 2px 1px 12px;
+      margin-bottom: 10px;
+    }
+
+    .day-tab {
+      flex: 0 0 auto;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 9px 13px;
+      background: var(--panel);
+      color: var(--muted);
+      font-size: .83rem;
+      font-weight: 700;
+    }
+
+    .day-tab.active {
+      color: #17120a;
+      border-color: var(--accent);
+      background: var(--accent);
+    }
+
+    .day-heading {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-bottom: 16px;
+    }
+
+    .day-heading h3 { margin: 0; font-size: 1.05rem; }
+
+    .stop {
+      display: grid;
+      grid-template-columns: 40px minmax(0, 1fr);
+      gap: 12px;
+      padding: 15px 0;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .stop:last-child { border-bottom: 0; }
+
+    .stop-number {
+      width: 36px;
+      height: 36px;
+      display: grid;
+      place-items: center;
+      border-radius: 12px;
+      background: #f59e0b1a;
+      color: var(--accent);
+      font-weight: 850;
+    }
+
+    .stop-main { min-width: 0; }
+
+    .stop-top {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      align-items: flex-start;
+    }
+
+    .stop-title { font-weight: 800; overflow-wrap: anywhere; }
+    .stop-meta { color: var(--muted); font-size: .79rem; margin-top: 4px; }
+    .stop-notes { font-size: .86rem; margin-top: 9px; white-space: pre-wrap; overflow-wrap: anywhere; }
+    .stop-actions { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 11px; }
+    .stop-actions .btn { min-height: 30px; padding: 5px 9px; font-size: .75rem; }
+
+    .cost-row {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      align-items: center;
+      padding: 11px 0;
+      border-bottom: 1px solid var(--border);
+      font-size: .87rem;
+    }
+
+    .cost-row:last-child { border-bottom: 0; }
+    .cost-row strong { white-space: nowrap; }
+    .cost-total { color: var(--accent); font-size: 1.05rem; font-weight: 850; }
+
+    .checklist {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      padding: 9px 0;
+      border-bottom: 1px solid var(--border);
+      font-size: .87rem;
+    }
+
+    .checklist:last-child { border-bottom: 0; }
+    .checklist input { width: 17px; height: 17px; accent-color: var(--accent); }
+
+    .tip {
+      border: 1px solid #f59e0b40;
+      background: #f59e0b0c;
+      border-radius: 12px;
+      padding: 13px;
+      color: #e8d9b9;
+      font-size: .81rem;
+      margin-top: 14px;
+    }
+
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 22px 0;
+      color: var(--muted);
+      font-size: .82rem;
+    }
+
+    .footer-inner {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .toast {
+      position: fixed;
+      bottom: 20px;
+      left: 50%;
+      z-index: 10;
+      transform: translate(-50%, 15px);
+      opacity: 0;
+      pointer-events: none;
+      max-width: calc(100% - 30px);
+      background: #272830;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 12px 17px;
+      box-shadow: 0 8px 35px #0007;
+      transition: opacity .2s, transform .2s;
+      text-align: center;
+      font-size: .87rem;
+    }
+
+    .toast.show { opacity: 1; transform: translate(-50%, 0); }
+    .hidden { display: none !important; }
+
+    @media (max-width: 850px) {
+      .layout { grid-template-columns: 1fr; }
+      .sidebar { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; align-items: start; }
+      .sidebar .panel { margin: 0; }
+    }
+
+    @media (max-width: 550px) {
+      .container { width: calc(100% - 20px); }
+      .panel { padding: 15px; }
+      .trip-header { padding: 17px; }
+      .sidebar { display: block; }
+      .sidebar .panel { margin-bottom: 15px; }
+      .stats { gap: 7px; }
+      .stat { padding: 10px; }
+      .stat-value { font-size: 1rem; }
+      .nav-link { font-size: .78rem; }
+    }
+
+    @media print {
+      body { background: white; color: black; }
+      header, .hero, .no-print, .sidebar, #tripEditor, footer { display: none !important; }
+      .container, .layout { display: block; width: 100%; padding: 0; }
+      .panel, .trip-header, .stat { background: white; color: black; border: 1px solid #ddd; break-inside: avoid; }
+      .muted, .trip-destination, .stat-label, .stop-meta { color: #555; }
+      .day-tabs { display: none; }
+      .stop { break-inside: avoid; }
+      a { color: black; }
+    }
+  </style>
+</head>
+
+<body>
+<header>
+  <div class="container nav">
+    <a href="https://otxs.de" class="brand">
+      <span class="brand-icon">O</span>
+      <span>OTXS Trip Planner<small>Plan less. Explore more.</small></span>
+    </a>
+    <a href="https://otxs.de" class="nav-link">← OTXS Home</a>
+  </div>
+</header>
+
+<main class="container">
+  <section class="hero">
+    <div class="eyebrow">OTXS · Travel tools</div>
+    <h1>Make every journey count.</h1>
+    <p>Organize your next road trip, motorcycle adventure or holiday. Keep destinations, daily stops, expenses and travel notes together.</p>
+  </section>
+
+  <div class="toolbar no-print">
+    <div class="muted" id="tripCount">Your trips</div>
+    <div class="toolbar-actions">
+      <button class="btn secondary" id="importBtn" type="button">Import backup</button>
+      <input class="hidden" id="importFile" type="file" accept=".json,application/json">
+      <button class="btn secondary" id="exportAllBtn" type="button">Export all</button>
+      <button class="btn primary" id="newTripBtn" type="button">＋ New trip</button>
+    </div>
+  </div>
+
+  <div class="layout">
+    <aside class="sidebar">
+      <section class="panel no-print" id="tripEditor">
+        <div class="section-head">
+          <div>
+            <h2 id="editorTitle">Create a trip</h2>
+            <div class="muted">Add the basic details.</div>
+          </div>
+          <span>🗺️</span>
+        </div>
+
+        <form id="tripForm">
+          <div class="field">
+            <label for="tripName">Trip name</label>
+            <input id="tripName" maxlength="100" placeholder="e.g. Weekend in the hills" required>
+          </div>
+          <div class="field">
+            <label for="destination">Main destination</label>
+            <input id="destination" maxlength="150" placeholder="e.g. Spiti Valley" required>
+          </div>
+          <div class="field">
+            <label for="startDate">Start date</label>
+            <input id="startDate" type="date" required>
+          </div>
+          <div class="field">
+            <label for="endDate">End date</label>
+            <input id="endDate" type="date" required>
+          </div>
+          <div class="field">
+            <label for="travelMode">Travel mode</label>
+            <select id="travelMode">
+              <option>Motorcycle</option>
+              <option>Car</option>
+              <option>Public transport</option>
+              <option>Walking / trekking</option>
+              <option>Flight</option>
+              <option>Mixed transport</option>
+              <option>Other</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="travellers">Number of travellers</label>
+            <input id="travellers" type="number" min="1" max="1000" value="1" required>
+          </div>
+          <div class="field">
+            <label for="tripCurrency">Currency</label>
+            <select id="tripCurrency">
+              <option value="INR">INR (₹)</option>
+              <option value="USD">USD ($)</option>
+              <option value="EUR">EUR (€)</option>
+              <option value="GBP">GBP (£)</option>
+              <option value="NPR">NPR (रु)</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="tripNotes">Trip notes (optional)</label>
+            <textarea id="tripNotes" maxlength="4000" placeholder="Meeting point, things to remember, useful contacts..."></textarea>
+          </div>
+          <div class="actions">
+            <button class="btn primary block" id="saveTripBtn" type="submit">Create trip</button>
+            <button class="btn secondary block hidden" id="cancelEditBtn" type="button">Cancel editing</button>
+          </div>
+        </form>
+      </section>
+
+      <section class="panel no-print">
+        <div class="section-head">
+          <div>
+            <h2>My trips</h2>
+            <div class="muted">Select a trip to manage it.</div>
+          </div>
+        </div>
+        <div id="tripList" class="trip-list">
+          <div class="empty">No trips yet. Create your first trip.</div>
+        </div>
+      </section>
+    </aside>
+
+    <div id="tripWorkspace">
+      <section class="panel">
+        <div class="empty">
+          <div style="font-size:2rem;margin-bottom:10px">🧭</div>
+          <h2>Ready for your next adventure?</h2>
+          <p>Create a trip using the form to start planning your itinerary.</p>
+        </div>
+      </section>
+    </div>
+  </div>
+</main>
+
+<footer>
+  <div class="container footer-inner">
+    <span>© <span id="year"></span> OTXS · Discover and Explore</span>
+    <a href="https://otxs.de">OTXS Home</a>
+  </div>
+</footer>
+
+<div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+<script>
+(() => {
+  "use strict";
+
+  const STORAGE_KEY = "otxs-trip-planner-v1";
+  const $ = id => document.getElementById(id);
+
+  let trips = loadTrips();
+  let selectedTripId = trips[0]?.id || null;
+  let editingTripId = null;
+  let activeDay = 0;
+  let toastTimer;
+
+  function uid() {
+    return crypto.randomUUID
+      ? crypto.randomUUID()
+      : Date.now() + "-" + Math.random().toString(16).slice(2);
+  }
+
+  function loadTrips() {
+    try {
+      const parsed = JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]");
+      if (!Array.isArray(parsed)) return [];
+      return parsed.filter(t => t && typeof t === "object").map(t => ({
+        ...t,
+        id: String(t.id || uid()),
+        stops: Array.isArray(t.stops) ? t.stops : [],
+        costs: { fuel: 0, accommodation: 0, food: 0, activities: 0, transport: 0, other: 0, ...(t.costs || {}) },
+        checklist: Array.isArray(t.checklist) ? t.checklist : []
+      }));
+    } catch {
+      return [];
+    }
+  }
+
+  function persist() {
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(trips));
+      return true;
+    } catch {
+      toast("Could not save. Browser storage may be full or unavailable.");
+      return false;
+    }
+  }
+
+  function toast(message) {
+    const el = $("toast");
+    el.textContent = message;
+    el.classList.add("show");
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => el.classList.remove("show"), 2600);
+  }
+
+  function el(tag, className, text) {
+    const node = document.createElement(tag);
+    if (className) node.className = className;
+    if (text !== undefined && text !== null) node.textContent = String(text);
+    return node;
+  }
+
+  function money(value, currency) {
+    try {
+      return new Intl.NumberFormat(undefined, {
+        style: "currency",
+        currency: currency || "INR",
+        maximumFractionDigits: 2
+      }).format(Math.max(0, Number(value) || 0));
+    } catch {
+      return (currency || "INR") + " " + (Number(value) || 0).toFixed(2);
+    }
+  }
+
+  function number(value) {
+    return (Number(value) || 0).toLocaleString(undefined, { maximumFractionDigits: 1 });
+  }
+
+  function today() {
+    const d = new Date();
+    return new Date(d.getTime() - d.getTimezoneOffset() * 60000).toISOString().slice(0, 10);
+  }
+
+  function dateLabel(value) {
+    if (!value) return "Date not set";
+    const d = new Date(value + "T00:00:00");
+    return Number.isNaN(d.getTime()) ? value : d.toLocaleDateString(undefined, {
+      day: "numeric", month: "short", year: "numeric"
+    });
+  }
+
+  function daysBetween(start, end) {
+    if (!start || !end) return 1;
+    const a = new Date(start + "T00:00:00");
+    const b = new Date(end + "T00:00:00");
+    return Math.max(1, Math.round((b - a) / 86400000) + 1);
+  }
+
+  function currentTrip() {
+    return trips.find(t => t.id === selectedTripId) || null;
+  }
+
+  function tripTotal(trip) {
+    return Object.values(trip.costs || {}).reduce(
+      (sum, cost) => sum + Math.max(0, Number(cost) || 0), 0
+    );
+  }
+
+  function tripDays(trip) {
+    return daysBetween(trip.startDate, trip.endDate);
+  }
+
+  function tripDate(trip, dayIndex) {
+    const d = new Date((trip.startDate || today()) + "T00:00:00");
+    d.setDate(d.getDate() + dayIndex);
+    return d.toISOString().slice(0, 10);
+  }
+
+  function renderTripList() {
+    const list = $("tripList");
+    list.replaceChildren();
+    $("tripCount").textContent = trips.length + (trips.length === 1 ? " saved trip" : " saved trips");
+
+    if (!trips.length) {
+      list.append(el("div", "empty", "No trips yet. Create your first trip."));
+      return;
+    }
+
+    [...trips].sort((a, b) => String(a.startDate).localeCompare(String(b.startDate))).forEach(trip => {
+      const btn = el("button", "trip-item" + (trip.id === selectedTripId ? " active" : ""));
+      btn.type = "button";
+
+      const name = el("strong", "", trip.name || "Untitled trip");
+      const destination = el("span", "", trip.destination || "No destination");
+      const dates = el("span", "", dateLabel(trip.startDate) + " – " + dateLabel(trip.endDate));
+      const budget = el("span", "", "Estimated: " + money(tripTotal(trip), trip.currency));
+
+      btn.append(name, destination, dates, budget);
+      btn.addEventListener("click", () => {
+        selectedTripId = trip.id;
+        activeDay = 0;
+        renderAll();
+      });
+
+      list.append(btn);
+    });
+  }
+
+  function renderWorkspace() {
+    const workspace = $("tripWorkspace");
+    workspace.replaceChildren();
+    const trip = currentTrip();
+
+    if (!trip) {
+      const panel = el("section", "panel");
+      const empty = el("div", "empty");
+      empty.append(
+        el("div", "", "🧭"),
+        el("h2", "", "Ready for your next adventure?"),
+        el("p", "", "Create a trip using the form to start planning your itinerary.")
+      );
+      panel.append(empty);
+      workspace.append(panel);
+      return;
+    }
+
+    const days = tripDays(trip);
+    activeDay = Math.min(Math.max(0, activeDay), days - 1);
+
+    const header = el("section", "trip-header");
+    const top = el("div", "section-head");
+    const left = document.createElement("div");
+    left.append(
+      el("div", "eyebrow", trip.travelMode || "Trip"),
+      el("h2", "", trip.name),
+      el("div", "trip-destination", "📍 " + trip.destination)
+    );
+
+    const editButton = el("button", "btn secondary no-print", "Edit trip");
+    editButton.type = "button";
+    editButton.addEventListener("click", () => startEditTrip(trip.id));
+    top.append(left, editButton);
+    header.append(top);
+
+    const stats = el("div", "stats");
+    [
+      ["Duration", days + (days === 1 ? " day" : " days")],
+      ["Travellers", number(trip.travellers || 1)],
+      ["Estimated cost", money(tripTotal(trip), trip.currency)]
+    ].forEach(([label, value]) => {
+      const stat = el("div", "stat");
+      stat.append(el("div", "stat-label", label), el("div", "stat-value", value));
+      stats.append(stat);
+    });
+    header.append(stats);
+
+    const dateLine = el("div", "muted", dateLabel(trip.startDate) + " – " + dateLabel(trip.endDate));
+    dateLine.style.marginTop = "14px";
+    header.append(dateLine);
+
+    if (trip.notes) {
+      const notes = el("div", "tip", "Trip notes: " + trip.notes);
+      header.append(notes);
+    }
+
+    const headerActions = el("div", "actions no-print");
+    const exportButton = el("button", "btn secondary", "Export this trip");
+    exportButton.type = "button";
+    exportButton.addEventListener("click", () => exportTrip(trip));
+    const printButton = el("button", "btn secondary", "Print / Save PDF");
+    printButton.type = "button";
+    printButton.addEventListener("click", () => window.print());
+    const deleteButton = el("button", "btn danger", "Delete trip");
+    deleteButton.type = "button";
+    deleteButton.addEventListener("click", () => deleteTrip(trip.id));
+    headerActions.append(exportButton, printButton, deleteButton);
+    header.append(headerActions);
+
+    workspace.append(header);
+
+    const dayPanel = el("section", "panel");
+    const dayHeading = el("div", "day-heading");
+    dayHeading.append(
+      el("h2", "", "Daily itinerary"),
+      el("span", "muted", trip.stops.length + (trip.stops.length === 1 ? " stop" : " stops"))
+    );
+    dayPanel.append(dayHeading);
+
+    const tabs = el("div", "day-tabs no-print");
+    for (let i = 0; i < days; i++) {
+      const tab = el("button", "day-tab" + (i === activeDay ? " active" : ""), "Day " + (i + 1));
+      tab.type = "button";
+      tab.addEventListener("click", () => {
+        activeDay = i;
+        renderWorkspace();
+      });
+      tabs.append(tab);
+    }
+    dayPanel.append(tabs);
+
+    const dayTitle = el("div", "day-heading");
+    dayTitle.append(
+      el("h3", "", "Day " + (activeDay + 1) + " · " + dateLabel(tripDate(trip, activeDay))),
+      el("span", "muted", "Plan your stops")
+    );
+    dayPanel.append(dayTitle);
+
+    const dayStops = trip.stops
+      .filter(stop => Number(stop.day) === activeDay)
+      .sort((a, b) => Number(a.order || 0) - Number(b.order || 0));
+
+    if (!dayStops.length) {
+      dayPanel.append(el("div", "empty", "Nothing planned for this day yet. Add your first stop below."));
+    } else {
+      dayStops.forEach((stop, index) => {
+        const stopNode = el("div", "stop");
+        const marker = el("div", "stop-number", index + 1);
+        const main = el("div", "stop-main");
+        const top = el("div", "stop-top");
+        const titleArea = document.createElement("div");
+        titleArea.append(el("div", "stop-title", stop.name));
+
+        const meta = [];
+        if (stop.time) meta.push("🕒 " + stop.time);
+        if (stop.duration) meta.push(stop.duration);
+        if (stop.location) meta.push("📍 " + stop.location);
+        if (stop.cost > 0) meta.push(money(stop.cost, trip.currency));
+
+        titleArea.append(el("div", "stop-meta", meta.join(" · ")));
+        top.append(titleArea);
+        main.append(top);
+
+        if (stop.notes) main.append(el("div", "stop-notes", stop.notes));
+
+        const actions = el("div", "stop-actions no-print");
+
+        const edit = el("button", "btn secondary", "Edit");
+        edit.type = "button";
+        edit.addEventListener("click", () => editStop(stop.id));
+
+        const earlier = el("button", "btn secondary", "↑");
+        earlier.type = "button";
+        earlier.title = "Move earlier";
+        earlier.setAttribute("aria-label", "Move stop earlier");
+        earlier.disabled = index === 0;
+        earlier.addEventListener("click", () => moveStop(stop.id, -1));
+
+        const later = el("button", "btn secondary", "↓");
+        later.type = "button";
+        later.title = "Move later";
+        later.setAttribute("aria-label", "Move stop later");
+        later.disabled = index === dayStops.length - 1;
+        later.addEventListener("click", () => moveStop(stop.id, 1));
+
+        const remove = el("button", "btn danger", "Delete");
+        remove.type = "button";
+        remove.addEventListener("click", () => deleteStop(stop.id));
+
+        actions.append(edit, earlier, later, remove);
+        main.append(actions);
+        stopNode.append(marker, main);
+        dayPanel.append(stopNode);
+      });
+    }
+
+    workspace.append(dayPanel);
+
+    const stopPanel = el("section", "panel no-print");
+    stopPanel.id = "stopFormPanel";
+
+    const formHead = el("div", "section-head");
+    formHead.append(
+      el("div", "", ""),
+      el("span", "", "📌")
+    );
+    formHead.firstChild.append(
+      el("h2", "", $("stopId").value ? "Edit stop" : "Add a stop"),
+      el("div", "muted", "Places, activities, meals or overnight stays.")
+    );
+    stopPanel.append(formHead);
+
+    const form = el("form");
+    form.id = "stopForm";
+
+    const hiddenId = el("input");
+    hiddenId.type = "hidden";
+    hiddenId.id = "stopId";
+    hiddenId.value = $("stopId").value;
+    form.append(hiddenId);
+
+    const row1 = el("div", "grid-2");
+    row1.append(
+      field("Stop name", input("stopName", "text", "e.g. Visit a viewpoint", true, 120)),
+      field("Time (optional)", input("stopTime", "time")),
+      field("Location (optional)", input("stopLocation", "text", "Area or address", false, 180)),
+      field("Duration (optional)", input("stopDuration", "text", "e.g. 1 hour", false, 60))
+    );
+    form.append(row1);
+
+    const row2 = el("div", "grid-2");
+    const daySelect = select("stopDay", [], true);
+    for (let i = 0; i < days; i++) {
+      const opt = document.createElement("option");
+      opt.value = i;
+      opt.textContent = "Day " + (i + 1) + " · " + dateLabel(tripDate(trip, i));
+      daySelect.append(opt);
+    }
+    daySelect.value = String(activeDay);
+
+    row2.append(
+      field("Trip day", daySelect),
+      field("Estimated cost", input("stopCost", "number", "0", false))
+    );
+    form.append(row2);
+
+    form.append(field("Notes (optional)", textarea("stopNotes", "Details, booking reference, things to remember...", 1200)));
+
+    const stopActions = el("div", "actions");
+    const saveStop = el("button", "btn primary", $("stopId").value ? "Save changes" : "Add stop");
+    saveStop.type = "submit";
+    const cancelStop = el("button", "btn secondary", "Clear form");
+    cancelStop.type = "button";
+    cancelStop.addEventListener("click", clearStopForm);
+    stopActions.append(saveStop, cancelStop);
+    form.append(stopActions);
+
+    stopFormValues(form);
+    stopPanel.append(form);
+    workspace.append(stopPanel);
+
+    const lower = el("div", "grid-2");
+
+    const costPanel = el("section", "panel");
+    costPanel.append(
+      el("h2", "", "Estimated trip expenses"),
+      el("p", "muted section-desc", "Enter your estimated costs by category.")
+    );
+
+    const costFields = [
+      ["fuel", "Fuel"],
+      ["accommodation", "Accommodation"],
+      ["food", "Food and meals"],
+      ["activities", "Activities and tickets"],
+      ["transport", "Other transport"],
+      ["other", "Other expenses"]
+    ];
+
+    const costForm = el("form");
+    costForm.id = "costForm";
+
+    costFields.forEach(([key, label]) => {
+      const wrap = el("div", "field");
+      const lab = el("label", "", label);
+      lab.htmlFor = "cost-" + key;
+      const inp = el("input");
+      inp.type = "number";
+      inp.id = "cost-" + key;
+      inp.min = "0";
+      inp.max = "1000000000";
+      inp.step = "any";
+      inp.value = Number(trip.costs[key] || 0);
+      wrap.append(lab, inp);
+      costForm.append(wrap);
+    });
+
+    const costActions = el("div", "actions no-print");
+    const saveCosts = el("button", "btn primary", "Save expenses");
+    saveCosts.type = "submit";
+    costActions.append(saveCosts);
+    costForm.append(costActions);
+    costPanel.append(costForm);
+
+    const totalRow = el("div", "cost-row");
+    totalRow.append(el("strong", "", "Total estimate"), el("span", "cost-total", money(tripTotal(trip), trip.currency)));
+    costPanel.append(totalRow);
+
+    const perPerson = (Number(trip.travellers) || 1) > 0
+      ? tripTotal(trip) / Number(trip.travellers)
+      : tripTotal(trip);
+    const personRow = el("div", "cost-row");
+    personRow.append(el("span", "", "Per traveller"), el("strong", "", money(perPerson, trip.currency)));
+    costPanel.append(personRow);
+
+    const notesPanel = el("section", "panel");
+    notesPanel.append(
+      el("h2", "", "Trip checklist"),
+      el("p", "muted section-desc", "Keep track of things to do before departure.")
+    );
+
+    const checkForm = el("form");
+    checkForm.id = "checkForm";
+    const checklist = el("div");
+    trip.checklist.forEach(item => {
+      const row = el("label", "checklist");
+      const check = el("input");
+      check.type = "checkbox";
+      check.checked = !!item.done;
+      check.addEventListener("change", () => {
+        item.done = check.checked;
+        persist();
+      });
+      row.append(check, el("span", "", item.text));
+      checklist.append(row);
+    });
+    checkForm.append(checklist);
+
+    const addCheckWrap = el("div", "field");
+    addCheckWrap.style.marginTop = "14px";
+    const addCheckLabel = el("label", "");
+    addCheckLabel.htmlFor = "checkText";
+    addCheckLabel.textContent = "Add checklist item";
+    const addCheckInput = el("input");
+    addCheckInput.id = "checkText";
+    addCheckInput.maxLength = 120;
+    addCheckInput.placeholder = "e.g. Check documents";
+    addCheckWrap.append(addCheckLabel, addCheckInput);
+
+    const addCheckButton = el("button", "btn secondary", "Add item");
+    addCheckButton.type = "submit";
+    addCheckButton.style.marginTop = "8px";
+    checkForm.append(addCheckWrap, addCheckButton);
+
+    checkForm.addEventListener("submit", event => {
+      event.preventDefault();
+      const text = addCheckInput.value.trim();
+      if (!text) return;
+      trip.checklist.push({ id: uid(), text, done: false });
+      if (persist()) renderWorkspace();
+    });
+
+    notesPanel.append(checkForm);
+    lower.append(costPanel, notesPanel);
+    workspace.append(lower);
+  }
+
+  function input(id, type, placeholder = "", required = false, maxLength = null) {
+    const node = el("input");
+    node.id = id;
+    node.type = type;
+    if (placeholder) node.placeholder = placeholder;
+    if (required) node.required = true;
+    if (maxLength) node.maxLength = maxLength;
+    if (type === "number") {
+      node.min = "0";
+      node.max = "1000000000";
+      node.step = "any";
+    }
+    return node;
+  }
+
+  function textarea(id, placeholder, maxLength) {
+    const node = el("textarea");
+    node.id = id;
+    node.placeholder = placeholder;
+    node.maxLength = maxLength;
+    return node;
+  }
+
+  function select(id, options, required = false) {
+    const node = el("select");
+    node.id = id;
+    node.required = required;
+    options.forEach(option => {
+      const opt = el("option", "", option.label);
+      opt.value = option.value;
+      node.append(opt);
+    });
+    return node;
+  }
+
+  function field(labelText, control) {
+    const wrap = el("div", "field");
+    const label = el("label", "", labelText);
+    label.htmlFor = control.id;
+    wrap.append(label, control);
+    return wrap;
+  }
+
+  function stopFormValues(form) {
+    const trip = currentTrip();
+    const stopId = $("stopId").value;
+    const stop = trip?.stops.find(s => s.id === stopId);
+
+    if (stop) {
+      $("stopName").value = stop.name || "";
+      $("stopTime").value = stop.time || "";
+      $("stopLocation").value = stop.location || "";
+      $("stopDuration").value = stop.duration || "";
+      $("stopDay").value = String(stop.day ?? activeDay);
+      $("stopCost").value = Number(stop.cost || 0);
+      $("stopNotes").value = stop.notes || "";
+    }
+
+    form.addEventListener("submit", saveStopForm);
+  }
+
+  function clearStopForm() {
+    $("stopId").value = "";
+    $("stopName").value = "";
+    $("stopTime").value = "";
+    $("stopLocation").value = "";
+    $("stopDuration").value = "";
+    $("stopDay").value = String(activeDay);
+    $("stopCost").value = "0";
+    $("stopNotes").value = "";
+
+    const heading = $("stopFormPanel")?.querySelector("h2");
+    if (heading) heading.textContent = "Add a stop";
+
+    const button = $("stopForm")?.querySelector('button[type="submit"]');
+    if (button) button.textContent = "Add stop";
+  }
+
+  function saveStopForm(event) {
+    event.preventDefault();
+    const trip = currentTrip();
+    if (!trip) return;
+
+    const id = $("stopId").value;
+    const stop = {
+      id: id || uid(),
+      name: $("stopName").value.trim(),
+      time: $("stopTime").value,
+      location: $("stopLocation").value.trim(),
+      duration: $("stopDuration").value.trim(),
+      day: Number($("stopDay").value),
+      cost: Math.max(0, Number($("stopCost").value) || 0),
+      notes: $("stopNotes").value.trim()
+    };
+
+    if (!stop.name) {
+      toast("Enter a stop name.");
+      return;
+    }
+
+    if (id) {
+      const index = trip.stops.findIndex(s => s.id === id);
+      if (index >= 0) trip.stops[index] = { ...trip.stops[index], ...stop };
+    } else {
+      stop.order = trip.stops.filter(s => Number(s.day) === stop.day).length;
+      trip.stops.push(stop);
+    }
+
+    activeDay = stop.day;
+    if (persist()) {
+      renderWorkspace();
+      toast(id ? "Stop updated." : "Stop added to itinerary.");
+    }
+  }
+
+  function editStop(id) {
+    const trip = currentTrip();
+    const stop = trip?.stops.find(s => s.id === id);
+    if (!stop) return;
+
+    activeDay = Number(stop.day) || 0;
+    $("stopId").value = stop.id;
+    renderWorkspace();
+
+    $("stopFormPanel").scrollIntoView({ behavior: "smooth", block: "start" });
+  }
+
+  function deleteStop(id) {
+    const trip = currentTrip();
+    if (!trip || !confirm("Delete this itinerary stop?")) return;
+    trip.stops = trip.stops.filter(s => s.id !== id);
+    if (persist()) {
+      renderWorkspace();
+      toast("Stop deleted.");
+    }
+  }
+
+  function moveStop(id, direction) {
+    const trip = currentTrip();
+    if (!trip) return;
+
+    const stop = trip.stops.find(s => s.id === id);
+    if (!stop) return;
+
+    const dayStops = trip.stops
+      .filter(s => Number(s.day) === Number(stop.day))
+      .sort((a, b) => Number(a.order || 0) - Number(b.order || 0));
+
+    const index = dayStops.findIndex(s => s.id === id);
+    const targetIndex = index + direction;
+    if (targetIndex < 0 || targetIndex >= dayStops.length) return;
+
+    const other = dayStops[targetIndex];
+    const firstOrder = Number(stop.order || 0);
+    stop.order = Number(other.order || 0);
+    other.order = firstOrder;
+
+    if (stop.order === other.order) {
+      dayStops.forEach((s, i) => s.order = i);
+    }
+
+    if (persist()) renderWorkspace();
+  }
+
+  function startEditTrip(id) {
+    const trip = trips.find(t => t.id === id);
+    if (!trip) return;
+
+    editingTripId = id;
+    $("editorTitle").textContent = "Edit trip";
+    $("saveTripBtn").textContent = "Save changes";
+    $("cancelEditBtn").classList.remove("hidden");
+
+    $("tripName").value = trip.name || "";
+    $("destination").value = trip.destination || "";
+    $("startDate").value = trip.startDate || "";
+    $("endDate").value = trip.endDate || "";
+    $("travelMode").value = trip.travelMode || "Motorcycle";
+    $("travellers").value = trip.travellers || 1;
+    $("tripCurrency").value = trip.currency || "INR";
+    $("tripNotes").value = trip.notes || "";
+
+    $("tripEditor").scrollIntoView({ behavior: "smooth" });
+  }
+
+  function resetTripEditor() {
+    editingTripId = null;
+    $("tripForm").reset();
+    $("editorTitle").textContent = "Create a trip";
+    $("saveTripBtn").textContent = "Create trip";
+    $("cancelEditBtn").classList.add("hidden");
+    $("travellers").value = 1;
+    $("tripCurrency").value = "INR";
+  }
+
+  $("cancelEditBtn").addEventListener("click", resetTripEditor);
+
+  $("tripForm").addEventListener("submit", event => {
+    event.preventDefault();
+
+    const name = $("tripName").value.trim();
+    const destination = $("destination").value.trim();
+    const startDate = $("startDate").value;
+    const endDate = $("endDate").value;
+
+    if (!name || !destination || !startDate || !endDate) {
+      toast("Complete the required trip details.");
+      return;
+    }
+
+    if (endDate < startDate) {
+      toast("The end date must be on or after the start date.");
+      return;
+    }
+
+    const existing = editingTripId
+      ? trips.find(t => t.id === editingTripId)
+      : null;
+
+    const updated = {
+      ...(existing || {}),
+      id: existing?.id || uid(),
+      name,
+      destination,
+      startDate,
+      endDate,
+      travelMode: $("travelMode").value,
+      travellers: Math.max(1, Number($("travellers").value) || 1),
+      currency: $("tripCurrency").value,
+      notes: $("tripNotes").value.trim(),
+      costs: existing?.costs || {
+        fuel: 0, accommodation: 0, food: 0,
+        activities: 0, transport: 0, other: 0
+      },
+      stops: existing?.stops || [],
+      checklist: existing?.checklist || []
+    };
+
+    if (existing) {
+      const oldDays = daysBetween(existing.startDate, existing.endDate);
+      const newDays = daysBetween(startDate, endDate);
+
+      updated.stops = updated.stops.map(stop => ({
+        ...stop,
+        day: Math.min(Math.max(0, Number(stop.day) || 0), newDays - 1)
+      }));
+
+      if (newDays !== oldDays) {
+        toast("Trip dates updated. Existing stops were kept within the new date range.");
+      }
+    } else {
+      trips.push(updated);
+    }
+
+    selectedTripId = updated.id;
+    activeDay = 0;
+
+    if (persist()) {
+      resetTripEditor();
+      renderAll();
+      toast(existing ? "Trip updated." : "Trip created.");
+    }
+  });
+
+  function deleteTrip(id) {
+    if (!confirm("Delete this trip, including its itinerary and expenses?")) return;
+
+    trips = trips.filter(t => t.id !== id);
+    if (selectedTripId === id) selectedTripId = trips[0]?.id || null;
+    activeDay = 0;
+
+    if (persist()) {
+      resetTripEditor();
+      renderAll();
+      toast("Trip deleted.");
+    }
+  }
+
+  function exportTrip(trip) {
+    downloadJSON(trip, safeFilename(trip.name) + "-otxs-trip.json");
+  }
+
+  function exportAll() {
+    downloadJSON({
+      app: "OTXS Trip Planner",
+      version: 1,
+      exportedAt: new Date().toISOString(),
+      trips
+    }, "otxs-trip-planner-backup.json");
+  }
+
+  function downloadJSON(value, filename) {
+    const blob = new Blob([JSON.stringify(value, null, 2)], { type: "application/json" });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = filename;
+    document.body.append(link);
+    link.click();
+    link.remove();
+    setTimeout(() => URL.revokeObjectURL(url), 1000);
+  }
+
+  function safeFilename(name) {
+    return String(name || "trip")
+      .normalize("NFKD")
+      .replace(/[^a-zA-Z0-9_-]+/g, "-")
+      .replace(/^-+|-+$/g, "")
+      .slice(0, 60) || "trip";
+  }
+
+  $("exportAllBtn").addEventListener("click", exportAll);
+
+  $("importBtn").addEventListener("click", () => $("importFile").click());
+
+  $("importFile").addEventListener("change", async event => {
+    const file = event.target.files?.[0];
+    if (!file) return;
+
+    try {
+      const parsed = JSON.parse(await file.text());
+      const imported = Array.isArray(parsed) ? parsed : parsed.trips;
+
+      if (!Array.isArray(imported)) throw new Error("Invalid backup format.");
+
+      const validTrips = imported.filter(t =>
+        t && typeof t === "object" &&
+        typeof t.name === "string" &&
+        typeof t.destination === "string"
+      );
+
+      if (!validTrips.length) throw new Error("No valid trips were found.");
+
+      if (!confirm(
+        `Import ${validTrips.length} trip(s)? Existing trips will be kept.`
+      )) return;
+
+      const existingIds = new Set(trips.map(t => t.id));
+
+      validTrips.forEach(raw => {
+        const trip = {
+          ...raw,
+          id: existingIds.has(String(raw.id)) ? uid() : String(raw.id || uid()),
+          stops: Array.isArray(raw.stops) ? raw.stops : [],
+          checklist: Array.isArray(raw.checklist) ? raw.checklist : [],
+          costs: {
+            fuel: 0, accommodation: 0, food: 0,
+            activities: 0, transport: 0, other: 0,
+            ...(raw.costs || {})
+          }
+        };
+        trips.push(trip);
+      });
+
+      selectedTripId = trips[trips.length - validTrips.length].id;
+      activeDay = 0;
+
+      if (persist()) {
+        renderAll();
+        toast("Trip backup imported.");
+      }
+    } catch (error) {
+      toast(error.message || "Could not import this file.");
+    } finally {
+      event.target.value = "";
+    }
+  });
+
+  $("newTripBtn").addEventListener("click", () => {
+    resetTripEditor();
+    $("tripEditor").scrollIntoView({ behavior: "smooth" });
+    $("tripName").focus();
+  });
+
+  function saveCosts(event) {
+    event.preventDefault();
+    const trip = currentTrip();
+    if (!trip) return;
+
+    ["fuel", "accommodation", "food", "activities", "transport", "other"].forEach(key => {
+      trip.costs[key] = Math.max(0, Number($("cost-" + key).value) || 0);
+    });
+
+    if (persist()) {
+      renderAll();
+      toast("Trip expenses saved.");
+    }
+  }
+
+  function renderAll() {
+    renderTripList();
+    renderWorkspace();
+  }
+
+  // Defaults for a new trip.
+  $("startDate").value = today();
+  $("endDate").value = today();
+  $("year").textContent = new Date().getFullYear();
+
+  // Rebind the dynamically created expense form whenever the workspace renders.
+  const originalRenderWorkspace = renderWorkspace;
+  renderWorkspace = function() {
+    originalRenderWorkspace();
+    const form = $("costForm");
+    if (form) form.addEventListener("submit", saveCosts);
+  };
+
+  renderAll();
+})();
+</script>
+</body>
+</html>
+
